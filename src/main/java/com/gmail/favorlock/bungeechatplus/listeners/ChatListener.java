@@ -23,8 +23,8 @@ public class ChatListener implements Listener {
 		this.servers = plugin.getConfig().FactionServers;
 	}
 	
-	@Subscribe
-	public void onPlayerMessage(ChatEvent event) {
+	//@Subscribe
+	/*public void onPlayerMessage(ChatEvent event) {
 		if (event.isCancelled()) {
 			return;
 		}
@@ -42,23 +42,23 @@ public class ChatListener implements Listener {
 				return;
 			}
 		}
-		
+
 		if (plugin.getConfig().Settings_EnableRegex) {
 			plugin.getRegexManager().filterChat(event);
 		}
-		
+
 		String message = event.getMessage();
 		ProxiedPlayer sender = (ProxiedPlayer)event.getSender();
-		
+
 		if (plugin.getChatterManager().getChatter(sender.getName()) == null) {
 			plugin.getChatterManager().loadChatter(sender.getName());
 		}
-		
+
 		Chatter chatter = plugin.getChatterManager().getChatter(sender.getName());
 		Channel channel = chatter.getActiveChannel();
 		
 		channel.sendMessage(event, message);
-	}
+	}*/
 	
 	@Subscribe
 	public void onPlayerLogin(PostLoginEvent event) {

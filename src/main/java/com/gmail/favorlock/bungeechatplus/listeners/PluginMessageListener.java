@@ -34,27 +34,19 @@ public class PluginMessageListener implements Listener {
 			chatter.setPrefix(in.readUTF());
 			chatter.setSuffix(in.readUTF());
 		}
-		if (channel.equalsIgnoreCase("FactionChat")) {
+		else if (channel.equalsIgnoreCase("HeroChat")) {
 			String name = in.readUTF();
 			String message = in.readUTF();
-			ProxiedPlayer player = null;
-			Chatter chatter = plugin.getChatterManager().getChatter(name);
-			
-			for (ProxiedPlayer players : plugin.getPlayers()) {
-				if (name.equalsIgnoreCase(players.getName())) {
-					player = players;
-				}
+
+			ProxiedPlayer sender = (ProxiedPlayer)event.getSender();
+
+			if (plugin.getChatterManager().getChatter(sender.getName()) == null) {
+				plugin.getChatterManager().loadChatter(sender.getName());
 			}
-			
-			ChatEvent chatevent = new ChatEvent(player, event.getReceiver(), message);
-			
-			if (plugin.getConfig().Settings_EnableRegex) {
-				plugin.getRegexManager().filterChat(chatevent);
-			}
-			
+
+			Chatter chatter = plugin.getChatterManager().getChatter(sender.getName());
 			Channel chatChannel = chatter.getActiveChannel();
-			
-			chatChannel.sendMessage(chatevent, message);
+			chatChannel.sendMessage(sender, message);
 		}
 	}
 
