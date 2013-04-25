@@ -38,15 +38,22 @@ public class PluginMessageListener implements Listener {
 			String name = in.readUTF();
 			String message = in.readUTF();
 
-			ProxiedPlayer sender = (ProxiedPlayer)event.getSender();
+			ProxiedPlayer p = null;
+			for (ProxiedPlayer player : plugin.getPlayers()) {
+				if (player.getName().equals(name)) {
+					p = player;
+				}
+			}
+			if (p != null) {
+				if (plugin.getChatterManager().getChatter(p.getName()) == null) {
+					plugin.getChatterManager().loadChatter(p.getName());
+				}
 
-			if (plugin.getChatterManager().getChatter(sender.getName()) == null) {
-				plugin.getChatterManager().loadChatter(sender.getName());
+				Chatter chatter = plugin.getChatterManager().getChatter(p.getName());
+				Channel chatChannel = chatter.getActiveChannel();
+				chatChannel.sendMessage(p, message);
 			}
 
-			Chatter chatter = plugin.getChatterManager().getChatter(sender.getName());
-			Channel chatChannel = chatter.getActiveChannel();
-			chatChannel.sendMessage(sender, message);
 		}
 	}
 
